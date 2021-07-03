@@ -143,7 +143,7 @@ const EntryItem: FC<Entry> = ({
           colorScheme="green"
           mr={4}
         />
-        <Badge mr="2">{timeSpent.replace(".0", "")} hrs</Badge>{" "}
+        <Badge mr="2">{timeSpent.replace(".0", "")} hr / s</Badge>
         <Text justifySelf="flex-end" wordBreak="break-word" fontSize="md">
           #{tags.split(",").join(" ")} {activity}
         </Text>
