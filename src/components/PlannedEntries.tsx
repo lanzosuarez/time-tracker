@@ -4,13 +4,13 @@ import Header from "./Header";
 import { EntriesGroupBy } from "./Entries";
 import { Entry } from "types";
 
-const ImportantEntries: FC = () => {
-  const filterImportant = (entry: Entry) => entry.important;
+const PlannedEntries: FC = () => {
+  const filterImportant = (entry: Entry) => !!entry.dueDate;
   return (
     <Layout
       Right={
         <>
-          <Header title="Important" />
+          <Header title="Planned" />
           <EntriesGroupBy filterFn={filterImportant} />
         </>
       }
@@ -18,4 +18,4 @@ const ImportantEntries: FC = () => {
   );
 };
 
-export default ImportantEntries;
+export default PlannedEntries;

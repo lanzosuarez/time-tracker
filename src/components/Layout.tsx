@@ -9,11 +9,13 @@ import {
   ListItem,
   List,
   Text,
+  Box,
 } from "@chakra-ui/react";
 import { Z_INDEXES } from "../constants";
 import { Overlay } from "./Common";
 import UserDetails from "./UserDetails";
 import { useRouter } from "next/router";
+import { SunIcon, StarIcon, CalendarIcon, ViewIcon } from "@chakra-ui/icons";
 
 const LayoutContext = React.createContext({
   sideNavHidden: false,
@@ -25,14 +27,22 @@ const navItems = [
   {
     route: "/",
     name: "My Day",
+    icon: <SunIcon />,
   },
   {
     route: "/entries",
     name: "Entries",
+    icon: <ViewIcon />,
   },
   {
     route: "/important",
     name: "Important",
+    icon: <StarIcon />,
+  },
+  {
+    route: "/planned",
+    name: "Planned",
+    icon: <CalendarIcon />,
   },
 ];
 
@@ -102,6 +112,8 @@ const Layout: FC<{ Right: JSX.Element }> = ({ Right }) => {
               <ListItem px="3" py="1" key={i.name} mt={idx > 0 && 2}>
                 <Link prefetch href={i.route}>
                   <Text
+                    d="flex"
+                    alignItems="center"
                     _hover={{
                       fontWeight: "medium",
                     }}
@@ -110,7 +122,10 @@ const Layout: FC<{ Right: JSX.Element }> = ({ Right }) => {
                     cursor="pointer"
                     fontSize="md"
                   >
-                    {i.name}
+                    {i.icon}
+                    <Box as="span" ml={4}>
+                      {i.name}
+                    </Box>
                   </Text>
                 </Link>
               </ListItem>
