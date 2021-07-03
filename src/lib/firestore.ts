@@ -3,7 +3,7 @@ import { Entry } from "types";
 export const db = firebase.firestore();
 
 export const getUserEntries = (user: firebase.User) => {
-  return db.collection("entries").where("user", "==", user.uid);
+  return db.collection("entries").where("user", "==", user?.uid);
 };
 
 export const addNewUserEntry = (data: Partial<Entry>, user: firebase.User) =>

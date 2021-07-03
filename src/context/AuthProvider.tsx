@@ -6,6 +6,7 @@ import { ErrorMessage, FullPageSpinner } from "components/Common";
 
 const AuthContext = createContext<null | firebase.User>(null);
 
+// we store our user object here
 const AuthProvider = ({ children }) => {
   const [user, loading, error] = useAuthState(firebase.auth());
 
