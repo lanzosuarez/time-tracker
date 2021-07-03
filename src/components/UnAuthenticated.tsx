@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC, FormEvent } from "react";
 import {
   Button,
   Flex,
@@ -7,15 +7,21 @@ import {
   ModalBody,
   ModalCloseButton,
   ModalContent,
-  ModalFooter,
   ModalHeader,
   ModalOverlay,
   Stack,
+  Alert,
+  AlertIcon,
 } from "@chakra-ui/react";
 import Image from "next/image";
-import logo from "../../public/assets/logo.png";
+import logo from "/public/assets/logo.png";
 
-const UnAuthenticated = () => {
+import { signinWithGitHub, signinWithGoogle } from "lib/auth";
+import { useState } from "react";
+import { GithubIcon, GoogleIcon } from "theme";
+
+const UnAuthenticated: FC = () => {
+  const [error, setError] = useState(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -33,33 +39,56 @@ const UnAuthenticated = () => {
         colorScheme="blackAlpha"
         variant="outline"
       >
-        Sign in
+        Log in
       </Button>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal
+        isOpen={isOpen}
+        onClose={() => {
+          setError(null);
+          onClose();
+        }}
+        size="xs"
+      >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader color="gray.700">Sign in with</ModalHeader>
+          <ModalHeader color="gray.700">Continue with</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb="6">
             <Stack spacing={3}>
+              {!!error && (
+                <Alert borderRadius="md" status="error">
+                  <AlertIcon />
+                  {error}
+                </Alert>
+              )}
+
               <Button
+                leftIcon={<GoogleIcon />}
+                onClick={() => {
+                  setError(null);
+                  signinWithGoogle().catch((err) => {
+                    setError(err.message);
+                  });
+                }}
                 variant="outline"
-                onClick={onOpen}
-                size="sm"
+                size="md"
                 colorScheme="blackAlpha"
               >
-                Sign in with Google
-              </Button>
-              <Button onClick={onOpen} size="sm" colorScheme="blackAlpha">
-                Sign in with Github
+                Google
               </Button>
               <Button
-                onClick={onOpen}
-                size="sm"
-                colorScheme="twitter"
+                leftIcon={<GithubIcon />}
+                onClick={() => {
+                  setError(null);
+                  signinWithGitHub().catch((err) => {
+                    setError(err.message);
+                  });
+                }}
+                size="md"
                 variant="outline"
+                colorScheme="blackAlpha"
               >
-                Sign in with Twitter
+                Github
               </Button>
             </Stack>
           </ModalBody>

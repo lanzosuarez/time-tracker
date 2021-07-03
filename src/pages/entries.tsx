@@ -1,14 +1,14 @@
 import React from "react";
 
 import { PageContainer } from "components/PageContainer";
-import MyDay from "components/MyDay";
+import AllEntries from "components/AllEntries";
 
-const Index = () => {
+const Entries = () => {
   return (
     <PageContainer height="100vh" w="100%">
-      <MyDay />
+      <AllEntries />
     </PageContainer>
   );
 };
 
-export default Index;
+export default Entries;
