@@ -1,16 +1,16 @@
 import React from "react";
 
 import { PageContainer } from "components/PageContainer";
-import MyDay from "components/MyDay";
+import Insights from "components/Insights";
 import { useAuth } from "context/AuthProvider";
 
-const IndexPage = () => {
+const InsightsPage = () => {
   const user = useAuth();
   return (
     <PageContainer height="100vh" w="100%">
-      {user && <MyDay />}
+      <Insights />
     </PageContainer>
   );
 };
 
-export default IndexPage;
+export default InsightsPage;

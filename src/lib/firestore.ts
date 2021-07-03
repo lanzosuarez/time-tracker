@@ -2,10 +2,8 @@ import firebase from "lib/firebase";
 import { Entry } from "types";
 export const db = firebase.firestore();
 
-export const getUserEntries = (user: firebase.User) => {
-  // pass empty string when user is undefined
-  return db.collection("entries").where("user", "==", user.uid ?? "");
-};
+export const getUserEntries = (userId: string) =>
+  db.collection("entries").where("user", "==", userId);
 
 export const addNewUserEntry = (data: Partial<Entry>, user: firebase.User) =>
   db.collection("entries").add({

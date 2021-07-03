@@ -40,20 +40,10 @@ import { EntriesFilter, Entry } from "types";
 import { useCollection } from "react-firebase-hooks/firestore";
 import { useAuth } from "context/AuthProvider";
 import firebase from "lib/firebase";
-import { dayName, filterByDate, sortEntries } from "lib/utils";
+import { dayName, filterByDate, mapEntryDocs, sortEntries } from "lib/utils";
 import groupby from "lodash.groupby";
 import format from "date-fns/format";
 import { getDay } from "date-fns";
-
-const mapEntryDocs = (
-  entry: firebase.firestore.QueryDocumentSnapshot<firebase.firestore.DocumentData>
-) => ({
-  id: entry.id,
-  ...entry.data(),
-  createDate: (
-    entry.data().createDate as firebase.firestore.Timestamp
-  ).toDate(),
-});
 
 const Completed: FC<{ entries: Entry[]; allComplete: boolean }> = ({
   entries,
@@ -242,7 +232,7 @@ const Entries: FC<{ entries: Entry[] }> = ({ entries }) => {
 
 export const EntriesMyDay: FC<EntriesFilter> = ({ dateRange }) => {
   const user = useAuth();
-  const [entries, loading, error] = useCollection(getUserEntries(user));
+  const [entries, loading, error] = useCollection(getUserEntries(user.uid));
 
   const render = () => {
     if (loading)
@@ -314,7 +304,7 @@ export const EntriesGroupBy: FC<{ filterFn?: (entry: Entry) => boolean }> = ({
   filterFn,
 }) => {
   const user = useAuth();
-  const [entries, loading, error] = useCollection(getUserEntries(user));
+  const [entries, loading, error] = useCollection(getUserEntries(user.uid));
 
   const render = () => {
     if (loading)

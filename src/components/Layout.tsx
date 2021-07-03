@@ -36,6 +36,14 @@ const navItems = [
   },
 ];
 
+const insights = [
+  {
+    route: "/insights",
+    name: "Insights",
+  },
+];
+
+// layout for the whole app
 const Layout: FC<{ Right: JSX.Element }> = ({ Right }) => {
   // hide left when sm breakpoint was reached
   const sideNavHidden = useBreakpointValue({ base: false, md: true }, "md");
@@ -43,6 +51,7 @@ const Layout: FC<{ Right: JSX.Element }> = ({ Right }) => {
   const { pathname } = useRouter();
 
   useEffect(() => {
+    // hide nav if open and screen became larger
     const isNavOpenAndisMDorHigher = sideNavHidden && isDrawerOpen;
     if (isNavOpenAndisMDorHigher) {
       toggleDrawer.toggle();
@@ -55,6 +64,7 @@ const Layout: FC<{ Right: JSX.Element }> = ({ Right }) => {
     toggleDrawer: toggleDrawer.toggle,
   };
 
+  // hightight item when route is active
   const isActive = (route: string) => route === pathname;
 
   return (
@@ -89,6 +99,26 @@ const Layout: FC<{ Right: JSX.Element }> = ({ Right }) => {
           <Divider mt={4} />
           <List mt={4}>
             {navItems.map((i, idx) => (
+              <ListItem px="3" py="1" key={i.name} mt={idx > 0 && 2}>
+                <Link prefetch href={i.route}>
+                  <Text
+                    _hover={{
+                      fontWeight: "medium",
+                    }}
+                    fontWeight={isActive(i.route) ? "medium" : "normal"}
+                    color="gray.700"
+                    cursor="pointer"
+                    fontSize="md"
+                  >
+                    {i.name}
+                  </Text>
+                </Link>
+              </ListItem>
+            ))}
+          </List>
+          <Divider mt={4} />
+          <List mt={4}>
+            {insights.map((i, idx) => (
               <ListItem px="3" py="1" key={i.name} mt={idx > 0 && 2}>
                 <Link prefetch href={i.route}>
                   <Text

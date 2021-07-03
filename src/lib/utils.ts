@@ -1,6 +1,7 @@
 import { Entry } from "types";
 import isAfter from "date-fns/isAfter";
 import isBefore from "date-fns/isBefore";
+import firebase from "lib/firebase";
 
 export const dayName = (day: number) => {
   switch (day) {
@@ -33,3 +34,22 @@ export const filterByDate = (
   entries.filter(
     ({ createDate }) => isAfter(createDate, min) && isBefore(createDate, max)
   );
+
+export const mapEntryDocs = (
+  entry: firebase.firestore.QueryDocumentSnapshot<firebase.firestore.DocumentData>
+) => ({
+  id: entry.id,
+  ...entry.data(),
+  createDate: (
+    entry.data().createDate as firebase.firestore.Timestamp
+  ).toDate(),
+});
+
+export const getRandomColor = () => {
+  var letters = "0123456789ABCDEF";
+  var color = "#";
+  for (var i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+};
