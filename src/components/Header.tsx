@@ -1,10 +1,17 @@
 import React from "react";
 import { Box, Text } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
-import { dayName } from "lib/utils";
 import { useLayout } from "./Layout";
 
-const Header = ({ title, subtitle }: { title: string; subtitle?: string }) => {
+const Header = ({
+  title,
+  subtitle,
+  icon = null,
+}: {
+  title: string;
+  subtitle?: string;
+  icon?: JSX.Element;
+}) => {
   const { sideNavHidden, toggleDrawer } = useLayout();
   return (
     <Box boxShadow="sm" bgColor="white" p="2rem 2rem 1rem" w="100%">
@@ -15,7 +22,15 @@ const Header = ({ title, subtitle }: { title: string; subtitle?: string }) => {
         onClick={toggleDrawer}
       />
       <Box>
-        <Text color="gray.700" fontWeight="medium" mt="2" fontSize="2xl">
+        <Text
+          d="flex"
+          alignItems="center"
+          color="gray.700"
+          fontWeight="medium"
+          mt="2"
+          fontSize="2xl"
+        >
+          {icon}
           {title}
         </Text>
         {subtitle && (

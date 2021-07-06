@@ -3,6 +3,7 @@ import Layout from "./Layout";
 import Header from "./Header";
 import { EntriesGroupBy } from "./Entries";
 import { Entry } from "types";
+import { CalendarIcon } from "@chakra-ui/icons";
 
 const PlannedEntries: FC = () => {
   const filterImportant = (entry: Entry) => !!entry.dueDate;
@@ -10,7 +11,7 @@ const PlannedEntries: FC = () => {
     <Layout
       Right={
         <>
-          <Header title="Planned" />
+          <Header title="Planned" icon={<CalendarIcon mr={4} />} />
           <EntriesGroupBy filterFn={filterImportant} />
         </>
       }

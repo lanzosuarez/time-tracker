@@ -3,6 +3,7 @@ import Layout from "./Layout";
 import Header from "./Header";
 import { EntriesGroupBy } from "./Entries";
 import { Entry } from "types";
+import { StarIcon } from "@chakra-ui/icons";
 
 const ImportantEntries: FC = () => {
   const filterImportant = (entry: Entry) => entry.important;
@@ -10,7 +11,7 @@ const ImportantEntries: FC = () => {
     <Layout
       Right={
         <>
-          <Header title="Important" />
+          <Header title="Important" icon={<StarIcon mr={4} />} />
           <EntriesGroupBy filterFn={filterImportant} />
         </>
       }

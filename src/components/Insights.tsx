@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import Layout from "./Layout";
 import Header from "./Header";
-import { Flex, Text, Skeleton } from "@chakra-ui/react";
+import { Flex, Text, Skeleton, SimpleGrid, Stack, Box } from "@chakra-ui/react";
 import { BarChartViz, LineChartViz } from "./DataViz";
 import { useAuth } from "context/AuthProvider";
 import { getUserEntries } from "lib/firestore";
@@ -70,22 +70,32 @@ const Insights: FC = () => {
       Right={
         <>
           <Header title="Insights" />
-          <Flex p="8" pb="4">
-            <Flex h="300px" w="700px">
-              <Text fontSize="lg" fontWeight="medium">
-                How much time you spent on your activities
-              </Text>
-              <BarChartViz data={dataForBarChart} dataKeys={["Time Spent"]} />
-            </Flex>
-          </Flex>
-          <Flex p="8">
-            <Flex h="300px" w="700px">
-              <Text fontSize="lg" fontWeight="medium">
-                Your work trend
-              </Text>
-              <LineChartViz data={dataForLineChart} dataKeys={["Time Spent"]} />
-            </Flex>
-          </Flex>
+          <Box>
+            <SimpleGrid column={2}>
+              <Box p="8" pb="4">
+                <Stack h="300px" spacing={4} alignItems="center">
+                  <Text fontSize="lg" fontWeight="medium">
+                    How much time you spent on your activities
+                  </Text>
+                  <BarChartViz
+                    data={dataForBarChart}
+                    dataKeys={["Time Spent"]}
+                  />
+                </Stack>
+              </Box>
+              <Box p="8">
+                <Stack h="300px" spacing={4} alignItems="center">
+                  <Text fontSize="lg" fontWeight="medium">
+                    Your work trend
+                  </Text>
+                  <LineChartViz
+                    data={dataForLineChart}
+                    dataKeys={["Time Spent"]}
+                  />
+                </Stack>
+              </Box>
+            </SimpleGrid>
+          </Box>
         </>
       }
     />

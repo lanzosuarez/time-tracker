@@ -1,10 +1,5 @@
 import firebase from "lib/firebase";
 
-export interface User {
-  id: string;
-  entries: Entry[];
-}
-
 export interface Entry {
   id?: string;
   user: string;
