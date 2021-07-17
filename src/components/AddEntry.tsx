@@ -1,5 +1,4 @@
 import React from "react";
-import { FormControl, FormLabel, FormHelperText } from "@chakra-ui/react";
 import { useForm, Controller } from "react-hook-form";
 import {
   Box,
@@ -12,10 +11,14 @@ import {
   NumberIncrementStepper,
   NumberDecrementStepper,
   Button,
+  FormControl,
+  FormLabel,
+  FormHelperText,
 } from "@chakra-ui/react";
 import { useAuth } from "context/AuthProvider";
 import { addNewUserEntry } from "lib/firestore";
 import { Entry } from "types";
+import useIsMdUp from "hooks/useIsMdUp";
 
 export type AddEntryFormData = Pick<
   Entry,
@@ -23,13 +26,14 @@ export type AddEntryFormData = Pick<
 >;
 
 const AddEntry = () => {
+  const isMdUp = useIsMdUp();
   const user = useAuth();
   const { control, handleSubmit, watch, reset } = useForm<AddEntryFormData>({
     defaultValues: {
       activity: "",
       dueDate: "",
       tags: "",
-      timeSpent: "",
+      timeSpent: "0",
     },
   });
   const hasEntryName = !!watch()?.activity?.length;
@@ -52,15 +56,13 @@ const AddEntry = () => {
           <SimpleGrid
             rowGap={[2, 2, 0, 0]}
             templateColumns={
-              !hasEntryName ? "1fr" : ["1fr 1fr", "1fr 1fr", "1fr 130px 180px"]
+              !hasEntryName ? "1fr" : isMdUp ? "1fr 130px 180px" : "1fr 1fr"
             }
-            templateRows={
-              !hasEntryName ? ["1fr"] : ["1fr 1fr", "1fr 1fr", "1fr"]
-            }
+            templateRows={!hasEntryName ? "1fr" : isMdUp ? "1fr" : "1fr 1fr"}
             columnGap="1rem"
           >
             <FormControl
-              gridColumn={["1/-1", "1/-1", "1/2", "1/2"]}
+              gridColumn={isMdUp ? "1/2" : "1/-1"} // if md up extend to column 2
               isRequired
               id="entry"
             >

@@ -16,6 +16,7 @@ import { Overlay } from "./Common";
 import UserDetails from "./UserDetails";
 import { useRouter } from "next/router";
 import { SunIcon, StarIcon, CalendarIcon, ViewIcon } from "@chakra-ui/icons";
+import useIsMdUp from "hooks/useIsMdUp";
 
 const LayoutContext = React.createContext({
   sideNavHidden: false,
@@ -59,7 +60,7 @@ const GRID_TEMPLATE_CO_MD_UP = "300px 1fr";
 // layout for the whole app
 const Layout: FC<{ Right: JSX.Element }> = ({ Right }) => {
   // hide left when sm breakpoint was reached
-  const isMdUp = useBreakpointValue({ base: false, md: true }, "md");
+  const isMdUp = useIsMdUp();
   const [isDrawerOpen, toggleDrawer] = useBoolean();
   const { pathname } = useRouter();
 
@@ -71,17 +72,18 @@ const Layout: FC<{ Right: JSX.Element }> = ({ Right }) => {
     }
   }, [isMdUp, isDrawerOpen, toggleDrawer]);
 
-  const props = {
+  // hightight item when route is active
+  const isActive = (route: string) => route === pathname;
+  const isNotMDandIsDrawerOpen = !isMdUp && !isDrawerOpen;
+
+  const providerValue = {
     sideNavHidden: isMdUp,
     isDrawerOpen,
     toggleDrawer: toggleDrawer.toggle,
   };
 
-  // hightight item when route is active
-  const isActive = (route: string) => route === pathname;
-
   return (
-    <LayoutContext.Provider value={props}>
+    <LayoutContext.Provider value={providerValue}>
       <Grid
         position="relative"
         w="100%"
@@ -92,23 +94,20 @@ const Layout: FC<{ Right: JSX.Element }> = ({ Right }) => {
         }
         sx={{
           "#side-nav[aria-hidden=true]": {
-            width: 0,
-            overflow: "hidden",
-          },
-          "#side-nav[aria-hidden=false]": {
-            width: 300,
-            display: "block",
-            position: "relative",
+            position: "absolute",
+            height: "100%",
+            transform: "translateX(-100%)",
           },
         }}
       >
         <GridItem
+          width={300}
           as="aside"
-          transition="width 200ms"
+          transition="transform 300ms"
           boxShadow="lg"
           position="relative"
           zIndex={Z_INDEXES.sideNav}
-          aria-hidden={!isMdUp && !isDrawerOpen}
+          aria-hidden={isNotMDandIsDrawerOpen}
           id="side-nav"
           bg="white"
           overflow="hidden"
@@ -162,7 +161,12 @@ const Layout: FC<{ Right: JSX.Element }> = ({ Right }) => {
             </List>
           </Box>
         </GridItem>
-        <GridItem as="main" className="main-content" bg="whitesmoke">
+        <GridItem
+          gridColumn={isNotMDandIsDrawerOpen ? "1/-1" : ""} // extend the main content container from start of the grid line to the end
+          as="main"
+          className="main-content"
+          bg="whitesmoke"
+        >
           <SimpleGrid
             height="100%"
             maxH="100vh"
