@@ -53,23 +53,26 @@ const insights = [
   },
 ];
 
+const GRID_TEMPLATE_CO_SM_DOWN = "0px 1fr";
+const GRID_TEMPLATE_CO_MD_UP = "300px 1fr";
+
 // layout for the whole app
 const Layout: FC<{ Right: JSX.Element }> = ({ Right }) => {
   // hide left when sm breakpoint was reached
-  const sideNavHidden = useBreakpointValue({ base: false, md: true }, "md");
+  const isMdUp = useBreakpointValue({ base: false, md: true }, "md");
   const [isDrawerOpen, toggleDrawer] = useBoolean();
   const { pathname } = useRouter();
 
   useEffect(() => {
     // hide nav if open and screen became larger
-    const isNavOpenAndisMDorHigher = sideNavHidden && isDrawerOpen;
+    const isNavOpenAndisMDorHigher = isMdUp && isDrawerOpen;
     if (isNavOpenAndisMDorHigher) {
       toggleDrawer.toggle();
     }
-  }, [sideNavHidden, isDrawerOpen, toggleDrawer]);
+  }, [isMdUp, isDrawerOpen, toggleDrawer]);
 
   const props = {
-    sideNavHidden,
+    sideNavHidden: isMdUp,
     isDrawerOpen,
     toggleDrawer: toggleDrawer.toggle,
   };
@@ -84,8 +87,14 @@ const Layout: FC<{ Right: JSX.Element }> = ({ Right }) => {
         w="100%"
         h="100%"
         templateRows="1fr"
-        templateColumns={["0px 1fr", "0px 1fr", "300px 1fr", "300px 1fr"]}
+        templateColumns={
+          isMdUp ? GRID_TEMPLATE_CO_MD_UP : GRID_TEMPLATE_CO_SM_DOWN
+        }
         sx={{
+          "#side-nav[aria-hidden=true]": {
+            width: 0,
+            overflow: "hidden",
+          },
           "#side-nav[aria-hidden=false]": {
             width: 300,
             padding: "1rem",
@@ -95,15 +104,17 @@ const Layout: FC<{ Right: JSX.Element }> = ({ Right }) => {
         }}
       >
         <GridItem
+          as="aside"
+          transition="width 200ms"
           boxShadow="lg"
           position="relative"
           zIndex={Z_INDEXES.sideNav}
-          aria-hidden={!sideNavHidden && !isDrawerOpen}
+          aria-hidden={!isMdUp && !isDrawerOpen}
           id="side-nav"
           bg="white"
           overflow="hidden"
-          px={[0, 0, 4, 4]}
-          py={[0, 0, 4, 4]}
+          px={isMdUp ? 4 : 0}
+          py={isMdUp ? 4 : 0}
         >
           <UserDetails />
           <Divider mt={4} />
@@ -152,7 +163,7 @@ const Layout: FC<{ Right: JSX.Element }> = ({ Right }) => {
             ))}
           </List>
         </GridItem>
-        <GridItem className="main-content" bg="whitesmoke">
+        <GridItem as="main" className="main-content" bg="whitesmoke">
           <SimpleGrid
             height="100%"
             maxH="100vh"
@@ -172,7 +183,7 @@ const Layout: FC<{ Right: JSX.Element }> = ({ Right }) => {
 export const useLayout = () => {
   const context = useContext(LayoutContext);
   if (!context) {
-    throw new Error("Your component should be wrapped around a LayoutProvider");
+    throw new Error("useLayout must be used within a LayoutProvider");
   }
 
   return context;

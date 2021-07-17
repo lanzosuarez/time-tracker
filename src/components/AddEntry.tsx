@@ -1,9 +1,5 @@
 import React from "react";
-import {
-  FormControl,
-  FormLabel,
-  FormHelperText,
-} from "@chakra-ui/form-control";
+import { FormControl, FormLabel, FormHelperText } from "@chakra-ui/react";
 import { useForm, Controller } from "react-hook-form";
 import {
   Box,

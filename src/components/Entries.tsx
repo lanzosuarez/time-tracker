@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, memo } from "react";
 import {
   Skeleton,
   Stack,
@@ -39,7 +39,6 @@ import { ErrorMessage } from "./Common";
 import { EntriesFilter, Entry } from "types";
 import { useCollection } from "react-firebase-hooks/firestore";
 import { useAuth } from "context/AuthProvider";
-import firebase from "lib/firebase";
 import { dayName, filterByDate, mapEntryDocs, sortEntries } from "lib/utils";
 import groupby from "lodash.groupby";
 import format from "date-fns/format";
@@ -85,15 +84,17 @@ const Completed: FC<{ entries: Entry[]; allComplete: boolean }> = ({
 const EntryList: FC<{ entries: Entry[] }> = ({ entries }) => {
   return (
     // typescript is complaining if i dont wrap it arround with fragment
-    <>
-      {entries.map((entry) => (
-        <EntryItem key={entry.id} {...entry} />
+    <Stack>
+      {/* saw createDate is causing an unnecessary rerender of entry item saw i ommited it for now cuz its not being used anyway*/}
+
+      {entries.map(({ createDate, ...entryProps }) => (
+        <EntryItem key={entryProps.id} {...entryProps} />
       ))}
-    </>
+    </Stack>
   );
 };
 
-const EntryItem: FC<Entry> = ({
+let EntryItem: FC<Omit<Entry, "createDate">> = ({
   activity,
   tags,
   dueDate,
@@ -209,6 +210,9 @@ const EntryItem: FC<Entry> = ({
     </Box>
   );
 };
+
+// memoize entry item
+EntryItem = memo(EntryItem);
 
 const Entries: FC<{ entries: Entry[] }> = ({ entries }) => {
   const unCompletedEntries: Entry[] = entries.filter(
