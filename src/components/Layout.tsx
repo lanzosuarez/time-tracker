@@ -97,7 +97,6 @@ const Layout: FC<{ Right: JSX.Element }> = ({ Right }) => {
           },
           "#side-nav[aria-hidden=false]": {
             width: 300,
-            padding: "1rem",
             display: "block",
             position: "relative",
           },
@@ -113,55 +112,55 @@ const Layout: FC<{ Right: JSX.Element }> = ({ Right }) => {
           id="side-nav"
           bg="white"
           overflow="hidden"
-          px={isMdUp ? 4 : 0}
-          py={isMdUp ? 4 : 0}
         >
-          <UserDetails />
-          <Divider mt={4} />
-          <List mt={4}>
-            {navItems.map((i, idx) => (
-              <ListItem px="3" py="1" key={i.name} mt={idx > 0 && 2}>
-                <Link prefetch href={i.route}>
-                  <Text
-                    d="flex"
-                    alignItems="center"
-                    _hover={{
-                      fontWeight: "medium",
-                    }}
-                    fontWeight={isActive(i.route) ? "medium" : "normal"}
-                    color="gray.700"
-                    cursor="pointer"
-                    fontSize="md"
-                  >
-                    {i.icon}
-                    <Box as="span" ml={4}>
+          <Box m="4">
+            <UserDetails />
+            <Divider mt={4} />
+            <List mt={4}>
+              {navItems.map((i, idx) => (
+                <ListItem px="3" py="1" key={i.name} mt={idx > 0 && 2}>
+                  <Link prefetch href={i.route}>
+                    <Text
+                      d="flex"
+                      alignItems="center"
+                      _hover={{
+                        fontWeight: "medium",
+                      }}
+                      fontWeight={isActive(i.route) ? "medium" : "normal"}
+                      color="gray.700"
+                      cursor="pointer"
+                      fontSize="md"
+                    >
+                      {i.icon}
+                      <Box as="span" ml={4}>
+                        {i.name}
+                      </Box>
+                    </Text>
+                  </Link>
+                </ListItem>
+              ))}
+            </List>
+            <Divider mt={4} />
+            <List mt={4}>
+              {insights.map((i, idx) => (
+                <ListItem px="3" py="1" key={i.name} mt={idx > 0 && 2}>
+                  <Link prefetch href={i.route}>
+                    <Text
+                      _hover={{
+                        fontWeight: "medium",
+                      }}
+                      fontWeight={isActive(i.route) ? "medium" : "normal"}
+                      color="gray.700"
+                      cursor="pointer"
+                      fontSize="md"
+                    >
                       {i.name}
-                    </Box>
-                  </Text>
-                </Link>
-              </ListItem>
-            ))}
-          </List>
-          <Divider mt={4} />
-          <List mt={4}>
-            {insights.map((i, idx) => (
-              <ListItem px="3" py="1" key={i.name} mt={idx > 0 && 2}>
-                <Link prefetch href={i.route}>
-                  <Text
-                    _hover={{
-                      fontWeight: "medium",
-                    }}
-                    fontWeight={isActive(i.route) ? "medium" : "normal"}
-                    color="gray.700"
-                    cursor="pointer"
-                    fontSize="md"
-                  >
-                    {i.name}
-                  </Text>
-                </Link>
-              </ListItem>
-            ))}
-          </List>
+                    </Text>
+                  </Link>
+                </ListItem>
+              ))}
+            </List>
+          </Box>
         </GridItem>
         <GridItem as="main" className="main-content" bg="whitesmoke">
           <SimpleGrid
