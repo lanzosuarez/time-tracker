@@ -83,10 +83,8 @@ const Completed: FC<{ entries: Entry[]; allComplete: boolean }> = ({
 
 const EntryList: FC<{ entries: Entry[] }> = ({ entries }) => {
   return (
-    // typescript is complaining if i dont wrap it arround with fragment
     <Stack>
       {/* saw createDate is causing an unnecessary rerender of entry item saw i ommited it for now cuz its not being used anyway*/}
-
       {entries.map(({ createDate, ...entryProps }) => (
         <EntryItem key={entryProps.id} {...entryProps} />
       ))}
@@ -331,6 +329,7 @@ export const EntriesGroupBy: FC<{ filterFn?: (entry: Entry) => boolean }> = ({
       ? (entries?.docs.map(mapEntryDocs) as Entry[])
       : [];
 
+    // if there is a filterFn, filter the docs using the filterFn
     entriesDocs = filterFn ? entriesDocs.filter(filterFn) : entriesDocs;
 
     const groupedEntries = groupby(
