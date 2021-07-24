@@ -8,29 +8,43 @@ import getDay from "date-fns/getDay";
 import format from "date-fns/format";
 import startOfDay from "date-fns/startOfDay";
 import endOfDay from "date-fns/endOfDay";
+import UpdateEntryProvider, {
+  UpdateEntryConsumer,
+} from "context/UpdateEntryProvider";
+import UpdateEntry from "./UpdateEntry";
 
 const MyDay: FC = () => {
   return (
-    <Layout
-      Right={
-        <>
-          <Header
-            title="My Day"
-            subtitle={`${dayName(getDay(new Date()))}, ${format(
-              new Date(),
-              "MMM d"
-            )}`}
-          />
-          <EntriesMyDay
-            dateRange={{
-              min: startOfDay(new Date()),
-              max: endOfDay(new Date()),
-            }}
-          />
-          <AddEntry />
-        </>
-      }
-    />
+    <UpdateEntryProvider>
+      <Layout
+        Right={
+          <>
+            <Header
+              title="My Day"
+              subtitle={`${dayName(getDay(new Date()))}, ${format(
+                new Date(),
+                "MMM d"
+              )}`}
+            />
+            <EntriesMyDay
+              dateRange={{
+                min: startOfDay(new Date()),
+                max: endOfDay(new Date()),
+              }}
+            />
+            <UpdateEntryConsumer>
+              {([toUpdateEntry]) =>
+                toUpdateEntry ? (
+                  <UpdateEntry entry={toUpdateEntry} />
+                ) : (
+                  <AddEntry />
+                )
+              }
+            </UpdateEntryConsumer>
+          </>
+        }
+      />
+    </UpdateEntryProvider>
   );
 };
 

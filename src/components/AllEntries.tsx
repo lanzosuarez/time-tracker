@@ -3,17 +3,20 @@ import Layout from "./Layout";
 import Header from "./Header";
 import { EntriesGroupBy } from "./Entries";
 import { ViewIcon } from "@chakra-ui/icons";
+import UpdateEntryProvider from "context/UpdateEntryProvider";
 
 const AllEntries: FC = () => {
   return (
-    <Layout
-      Right={
-        <>
-          <Header title="Entries" icon={<ViewIcon mr={4} />} />
-          <EntriesGroupBy />
-        </>
-      }
-    />
+    <UpdateEntryProvider>
+      <Layout
+        Right={
+          <>
+            <Header title="Entries" icon={<ViewIcon mr={4} />} />
+            <EntriesGroupBy />
+          </>
+        }
+      />
+    </UpdateEntryProvider>
   );
 };
 

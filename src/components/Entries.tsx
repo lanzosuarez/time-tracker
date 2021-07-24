@@ -27,8 +27,9 @@ import {
   ChevronRightIcon,
   ChevronDownIcon,
   CalendarIcon,
-  DeleteIcon,
+  EditIcon,
   StarIcon,
+  DeleteIcon,
 } from "@chakra-ui/icons";
 import {
   deleteUserEntry,
@@ -43,6 +44,7 @@ import { dayName, filterByDate, mapEntryDocs, sortEntries } from "lib/utils";
 import groupby from "lodash.groupby";
 import format from "date-fns/format";
 import { getDay } from "date-fns";
+import { useUpdateEntry } from "context/UpdateEntryProvider";
 
 const Completed: FC<{ entries: Entry[]; allComplete: boolean }> = ({
   entries,
@@ -82,36 +84,39 @@ const Completed: FC<{ entries: Entry[]; allComplete: boolean }> = ({
 };
 
 const EntryList: FC<{ entries: Entry[] }> = ({ entries }) => {
-  return (
-    <Stack>
-      {/* saw createDate is causing an unnecessary rerender of entry item saw i ommited it for now cuz its not being used anyway*/}
-      {entries.map(({ createDate, ...entryProps }) => (
-        <EntryItem key={entryProps.id} {...entryProps} />
-      ))}
-    </Stack>
-  );
+  try {
+    return (
+      <Stack>
+        {/* saw createDate is causing an unnecessary rerender of entry item saw i ommited it for now cuz its not being used anyway*/}
+        {entries.map(({ createDate, ...entryProps }) => (
+          <EntryItem key={entryProps.id} {...entryProps} />
+        ))}
+      </Stack>
+    );
+  } catch (error) {
+    console.trace(error);
+  }
 };
 
-let EntryItem: FC<Omit<Entry, "createDate">> = ({
-  activity,
-  tags,
-  dueDate,
-  timeSpent,
-  id,
-  completed,
-  important,
-}) => {
+let EntryItem: FC<Omit<Entry, "createDate">> = (props) => {
+  console.log(props);
+  const { activity, tags, dueDate, timeSpent, id, completed, important } =
+    props;
   const {
     isOpen,
     onOpen: openConfirmDelete,
     onClose: closeConfirmDelete,
   } = useDisclosure();
   const cancelRef = React.useRef();
+  const [, selectToUpdateEntry] = useUpdateEntry();
 
   const onCheck = async () => {
     await updateUserEntry({ completed: !completed }, id!);
     console.log("entry completed");
   };
+
+  const onSelectToUpdate = () =>
+    selectToUpdateEntry({ activity, tags, dueDate, timeSpent, id });
 
   return (
     <Box
@@ -150,10 +155,15 @@ let EntryItem: FC<Omit<Entry, "createDate">> = ({
             icon={<ChevronDownIcon />}
           />
           <MenuList>
+            <MenuItem onClick={onSelectToUpdate}>
+              <EditIcon mr="2" />
+              Update Entry
+            </MenuItem>
             <MenuItem onClick={openConfirmDelete}>
               <DeleteIcon mr="2" />
               Delete Entry
             </MenuItem>
+
             <MenuItem
               onClick={() => updateUserEntry({ important: !important }, id)}
             >

@@ -118,7 +118,7 @@ const Layout: FC<{ Right: JSX.Element }> = ({ Right }) => {
             <List mt={4}>
               {navItems.map((i, idx) => (
                 <ListItem px="3" py="1" key={i.name} mt={idx > 0 && 2}>
-                  <Link prefetch href={i.route}>
+                  <Link href={i.route}>
                     <Text
                       d="flex"
                       alignItems="center"
@@ -143,7 +143,7 @@ const Layout: FC<{ Right: JSX.Element }> = ({ Right }) => {
             <List mt={4}>
               {insights.map((i, idx) => (
                 <ListItem px="3" py="1" key={i.name} mt={idx > 0 && 2}>
-                  <Link prefetch href={i.route}>
+                  <Link href={i.route}>
                     <Text
                       _hover={{
                         fontWeight: "medium",
