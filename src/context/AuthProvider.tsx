@@ -21,7 +21,7 @@ const AuthProvider = ({ children }) => {
       router.push("/login");
     } else {
       // redirect to the last route
-      router.push(from.current);
+      router.push(from.current === "/login" ? "/" : from.current);
     }
   }, [user]);
 
