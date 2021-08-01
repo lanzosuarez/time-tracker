@@ -4,18 +4,21 @@ import Header from "./Header";
 import { EntriesGroupBy } from "./Entries";
 import { Entry } from "types";
 import { CalendarIcon } from "@chakra-ui/icons";
+import UpdateEntryProvider from "context/UpdateEntryProvider";
 
 const PlannedEntries: FC = () => {
   const filterImportant = (entry: Entry) => !!entry.dueDate;
   return (
-    <Layout
-      Right={
-        <>
-          <Header title="Planned" icon={<CalendarIcon mr={4} />} />
-          <EntriesGroupBy filterFn={filterImportant} />
-        </>
-      }
-    />
+    <UpdateEntryProvider>
+      <Layout
+        Right={
+          <>
+            <Header title="Planned" icon={<CalendarIcon mr={4} />} />
+            <EntriesGroupBy filterFn={filterImportant} />
+          </>
+        }
+      />
+    </UpdateEntryProvider>
   );
 };
 

@@ -83,23 +83,16 @@ const Completed: FC<{ entries: Entry[]; allComplete: boolean }> = ({
   );
 };
 
-const EntryList: FC<{ entries: Entry[] }> = ({ entries }) => {
-  try {
-    return (
-      <Stack>
-        {/* saw createDate is causing an unnecessary rerender of entry item saw i ommited it for now cuz its not being used anyway*/}
-        {entries.map(({ createDate, ...entryProps }) => (
-          <EntryItem key={entryProps.id} {...entryProps} />
-        ))}
-      </Stack>
-    );
-  } catch (error) {
-    console.trace(error);
-  }
-};
+const EntryList: FC<{ entries: Entry[] }> = ({ entries }) => (
+  <Stack>
+    {/* saw createDate is causing an unnecessary rerender of entry item saw i ommited it for now cuz its not being used anyway*/}
+    {entries.map(({ createDate, ...entryProps }) => (
+      <EntryItem key={entryProps.id} {...entryProps} />
+    ))}
+  </Stack>
+);
 
 let EntryItem: FC<Omit<Entry, "createDate">> = (props) => {
-  console.log(props);
   const { activity, tags, dueDate, timeSpent, id, completed, important } =
     props;
   const {
