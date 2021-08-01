@@ -14,8 +14,6 @@ const AuthProvider = ({ children }) => {
   const router = useRouter();
   const from = useRef(router.route);
 
-  console.log(user, loading);
-
   useEffect(() => {
     if (!user) {
       router.push("/login");
